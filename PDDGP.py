@@ -2,7 +2,7 @@
 # Authors: (*)Vaibhav Kumar, (*)Mark F. Flanagan, (^)Rui Zhang, and (*)Le-Nam Tran
 # (*): School of Electrical and Electronic Engineering, University College Dublin, Ireland
 # (^): Department of Electrical and Computer Engineering, National University of Singapore, Singapore
-# email: vaibhav.kumar@ucdconnect.ie / vaibhav.kumar@ieee.org
+# email: vaibhav.kumar@ucdconnect.ie / vaibhav.kumar@ucd.ie / vaibhav.kumar@ieee.org
 
 import numpy as np
 import matplotlib.pyplot as plt
