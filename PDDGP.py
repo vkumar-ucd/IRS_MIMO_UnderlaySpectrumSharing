@@ -5,7 +5,6 @@
 # email: vaibhav.kumar@ucdconnect.ie / vaibhav.kumar@ieee.org
 
 import numpy as np
-import scipy as sp
 import matplotlib.pyplot as plt
 np.random.seed(2)  # seed for random number generation
 
