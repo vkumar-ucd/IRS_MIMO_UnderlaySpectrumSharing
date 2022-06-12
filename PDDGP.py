@@ -1,5 +1,7 @@
 # Achievable rate maximization for underlay spectrum sharing MIMO system with intelligent reflecting surface
 # Authors: (*)Vaibhav Kumar, (*)Mark F. Flanagan, (^)Rui Zhang, and (*)Le-Nam Tran
+# DOI: 10.1109/LWC.2022.3180988
+# Journal: IEEE Wireless Communications Letters
 # (*): School of Electrical and Electronic Engineering, University College Dublin, Ireland
 # (^): Department of Electrical and Computer Engineering, National University of Singapore, Singapore
 # email: vaibhav.kumar@ucdconnect.ie / vaibhav.kumar@ucd.ie / vaibhav.kumar@ieee.org
@@ -89,7 +91,7 @@ def XUpdate(XOld,theta):
         stepSize = 2*stepSize               # update the step size 
         XNew = projX(XOld,grad,stepSize)    # updating X and projecting onto the feasible set of X
     stepSize = np.maximum(stepThreshold,stepSize/2)    
-    return stepSize,XNew,grad
+    return stepSize,XNew
 
 # Function for gradient wrt X matrix (refer to (7) in the paper)
 def gradXCalc(X,theta):
@@ -105,7 +107,7 @@ def gradXCalc(X,theta):
 # Projection onto the feasible set of X (Water-Filling solution)
 def projX(X,grad,stepSize):
     W = X+(1/stepSize)*grad
-    eigval, eigvec = np.linalg.eig(W)
+    eigval, eigvec = np.linalg.eigh(W)
     EigVal = np.real(eigval)
     if np.sum(np.maximum(EigVal,0)) < Pmax:
         EIGVAL = np.maximum(EigVal,0)
@@ -210,7 +212,7 @@ while (AugObjDiff > epsilon) or (ObjsDiff > epsilon):
     stepTheta,thetaVecOld = thetaUpdate(XOld,thetaVecOld)   # line 3 in Algorithm
 
     # updating X
-    stepX,XOld,gradX = XUpdate(XOld,thetaVecOld)            # line 4 in Algorithm 1    
+    stepX,XOld = XUpdate(XOld,thetaVecOld)            # line 4 in Algorithm 1    
     
     # updating s vector 
     Zk = H_Ik@(np.diag(thetaVecOld))@H_TI+H_Tk              # line 6 in Algorithm 1
