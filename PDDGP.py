@@ -37,7 +37,7 @@ def AugObjCalc(X,theta):
     gk = (np.trace((zk@X@(zk.conj().transpose(0,2,1))),\
             axis1=1,axis2=2))+sVec-Pk                      # g_k() function defined on page 3
     y = np.real(np.log(np.linalg.det(np.eye(Nr)+zR@X@zR.conj().T))\
-        -np.sum(upsilonVec*gk)-0.5*rho*np.sum((gk**2)))    # the augmented objective on page 3
+        -np.sum(upsilonVec*gk)-(0.5/rho)*np.sum((gk**2)))    # the augmented objective on page 3
     return y
 
 # Function to calculate the (true) objective in nats/s/Hz
@@ -68,7 +68,7 @@ def gradThetaCalc(X,theta):
     zR = H_IR@THETA@H_TI+H_TR       # effective ST-SR channel
     zk = H_Ik@THETA@H_TI+H_Tk       # effective ST-PR channel
     term1 = np.diag(Herm(H_IR)@np.linalg.inv(np.eye(Nr)+zR@X@Herm(zR))@zR@X@Herm(H_TI))
-    term2 = upsilonVec+rho*((np.trace((zk@X@(zk.conj().transpose(0,2,1))),axis1=1,axis2=2))+sVec-Pk)
+    term2 = upsilonVec+(1/rho)*((np.trace((zk@X@(zk.conj().transpose(0,2,1))),axis1=1,axis2=2))+sVec-Pk)
     term3 = np.diagonal((H_Ik.conj().transpose(0,2,1))@zk@X@Herm(H_TI),\
                         axis1=1, axis2=2)
     y = term1 - (term2[:,None]*term3).sum(axis=0) 
@@ -99,7 +99,7 @@ def gradXCalc(X,theta):
     zR = H_IR@THETA@H_TI+H_TR       # effective ST-SR channel      
     zk = H_Ik@THETA@H_TI+H_Tk       # effective ST-PR channel
     term1 = Herm(zR)@np.linalg.inv(np.eye(Nr)+zR@X@Herm(zR))@zR
-    term2 = upsilonVec+rho*((np.trace((zk@X@(zk.conj().transpose(0,2,1))),axis1=1,axis2=2))+sVec-Pk)
+    term2 = upsilonVec+(1/rho)*((np.trace((zk@X@(zk.conj().transpose(0,2,1))),axis1=1,axis2=2))+sVec-Pk)
     term3 = (zk.conj().transpose(0,2,1))@zk
     y = term1 - (term2[:,None,None]*term3).sum(axis=0)
     return y
@@ -123,8 +123,8 @@ def projsplx(v):
     cssv = np.cumsum(u) - 1
     ind = np.arange(n_features) + 1
     cond = u - cssv / ind > 0
-    rho = ind[cond][-1]
-    theta = cssv[cond][-1] / rho
+    tau = ind[cond][-1]
+    theta = cssv[cond][-1] / tau
     w = np.maximum(v - theta, 0)
     return w
 
@@ -194,7 +194,7 @@ XOld = np.zeros((Nt,Nt), dtype = 'complex_')                    # random covaria
 thetaVecOld = np.exp(1j*2*np.pi*np.random.rand(Ni,))            # random passive beamformer
 sVec = np.zeros((K,))                                           # initialization for the s vector 
 upsilonVec = np.zeros(np.shape(sVec))                           # initialization for the upsilon vector
-rho = 0.1                                                       # exterior penalty parameter
+rho = 10                                                        # exterior penalty parameter
 Zk = np.zeros(np.shape(H_Tk), dtype = 'complex_')               # memory allocation
 ObjSeq = np.array([])                                           # array initialization to store true objective
 AugObjSeq = np.array([])                                        # array initialization to store augmented objective
@@ -225,10 +225,10 @@ while (AugObjDiff > epsilon) or (ObjsDiff > epsilon):
     if iIter > 2:
         AugObjDiff = abs(AugObjSeq[iIter] - AugObjSeq[iIter-1])/AugObjSeq[iIter-1]
         if AugObjDiff <= epsilon:                                           # first condition for convergence
-            upsilonVec = upsilonVec+rho*np.real(
+            upsilonVec = upsilonVec+(1/rho)*np.real(
                             (np.trace((Zk@XOld@(Zk.conj().transpose(0,2,1))),axis1=1,axis2=2)\
                             +sVec-Pk))          # line 4 in Algorithm 2
-            rho = 10*rho                        # line 5 in Algorithm 2
+            rho = 0.1*rho                        # line 5 in Algorithm 2
     ObjsDiff = abs(AugObjSeq[iIter] - ObjSeq[iIter])/AugObjSeq[iIter]       # second condition for convergence 
 
 # Checking the feasibility of the solution
