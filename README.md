@@ -1,6 +1,6 @@
 # Achievable Rate Maximization for Underlay Spectrum Sharing MIMO System with Intelligent Reflecting Surface
 
-This repo contains the code for the PDDGP presented in the following scientific paper:
+This repo contains the code for the PDDGP algorithm presented in the following scientific paper:
 
 V. Kumar, M. F. Flanagan, R. Zhang, and L. -N. Tran, "Achievable Rate Maximization for Underlay Spectrum Sharing MIMO System with Intelligent Reflecting Surface," IEEE Wireless Communications Letters, 2022, doi: 10.1109/LWC.2022.3180988.
 
