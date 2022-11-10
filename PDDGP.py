@@ -216,7 +216,7 @@ while (AugObjDiff > epsilon) or (ObjsDiff > epsilon):
     
     # updating s vector 
     Zk = H_Ik@(np.diag(thetaVecOld))@H_TI+H_Tk              # line 6 in Algorithm 1
-    sVec = np.maximum(0, np.real(Pk-(np.trace((Zk@XOld@(Zk.conj().transpose(0,2,1))),axis1=1,axis2=2))))
+    sVec = np.maximum(0, np.real(Pk-(np.trace((Zk@XOld@(Zk.conj().transpose(0,2,1))),axis1=1,axis2=2))-rho*upsilonVec))
                                                             # line 5 in Algorithm 1
 
     #--------- calculating the (true) objective and augmented objective      
