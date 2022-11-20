@@ -4,7 +4,7 @@
 # Journal: IEEE Wireless Communications Letters
 # (*): School of Electrical and Electronic Engineering, University College Dublin, Ireland
 # (^): Department of Electrical and Computer Engineering, National University of Singapore, Singapore
-# email: vaibhav.kumar@ucdconnect.ie / vaibhav.kumar@ucd.ie / vaibhav.kumar@ieee.org
+# email: vaibhav.kumar@ieee.org / vaibhav.kumar@ucd.ie 
 
 import numpy as np
 import matplotlib.pyplot as plt
